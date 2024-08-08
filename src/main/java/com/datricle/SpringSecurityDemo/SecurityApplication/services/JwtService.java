@@ -13,7 +13,7 @@ import java.util.Date;
 import java.util.Set;
 
 @Service
-public class JetService {
+public class JwtService {
 
     @Value("${jwt.secretKey}")
     private String jwtSecretKey;
