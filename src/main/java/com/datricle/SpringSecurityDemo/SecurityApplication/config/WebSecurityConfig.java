@@ -5,12 +5,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
@@ -21,7 +17,7 @@ public class WebSecurityConfig {
     SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/posts").permitAll() // for only this path
+                        .requestMatchers("/posts", "/error", "/auth/**").permitAll() // for only this path
 //                        .requestMatchers("/posts/**").permitAll() // for all the path after posts/
                         .requestMatchers("/posts/**").hasAnyRole("ADMIN")
                         .anyRequest().authenticated())
@@ -32,22 +28,22 @@ public class WebSecurityConfig {
         return httpSecurity.build();
     }
 
-    @Bean
-    UserDetailsService myInMemoryDetailsService() {
-        UserDetails normalUser = User.withUsername("deep")
-                .password(passwordEncoder().encode("password"))
-                .roles("USER")
-                .build();
-
-        UserDetails adminUser = User.withUsername("admin")
-                .password(passwordEncoder().encode("admin"))
-                .roles("ADMIN")
-                .build();
-
-        return new InMemoryUserDetailsManager(normalUser, adminUser);
-
-
-    }
+//    @Bean
+//    UserDetailsService myInMemoryDetailsService() {
+//        UserDetails normalUser = User.withUsername("deep")
+//                .password(passwordEncoder().encode("password"))
+//                .roles("USER")
+//                .build();
+//
+//        UserDetails adminUser = User.withUsername("admin")
+//                .password(passwordEncoder().encode("admin"))
+//                .roles("ADMIN")
+//                .build();
+//
+//        return new InMemoryUserDetailsManager(normalUser, adminUser);
+//
+//
+//    }
 
     @Bean
     PasswordEncoder passwordEncoder() {

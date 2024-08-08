@@ -14,8 +14,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Slf4j
-@Service @RequiredArgsConstructor
-public class PostServiceImpl implements PostService{
+@Service
+@RequiredArgsConstructor
+public class PostServiceImpl implements PostService {
 
     private final PostRepository postRepository;
     private final ModelMapper modelMapper;
@@ -39,7 +40,7 @@ public class PostServiceImpl implements PostService{
     public PostDTO getPostById(Long postId) {
         PostEntity postEntity = postRepository
                 .findById(postId)
-                .orElseThrow(() -> new ResourceNotFoundException("Post not found with id "+postId));
+                .orElseThrow(() -> new ResourceNotFoundException("Post not found with id " + postId));
         return modelMapper.map(postEntity, PostDTO.class);
     }
 }

@@ -14,7 +14,7 @@ class SecurityApplicationTests {
 
     @Test
     void contextLoads() {
-        User user = new User(4L, "deep@gmail.com", "1234");
+        User user = new User(4L, "deep@gmail.com","1234", "deep");
 
         String token = jwtService.generateToken(user);
         System.out.println(token);
@@ -22,6 +22,5 @@ class SecurityApplicationTests {
         Long id = jwtService.getUserFromToken(token);
         System.out.println(id);
     }
-
 
 }
