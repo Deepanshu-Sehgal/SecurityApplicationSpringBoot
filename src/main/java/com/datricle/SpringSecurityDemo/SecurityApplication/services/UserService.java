@@ -30,7 +30,7 @@ public class UserService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return userRepository.findByEmail(username)
                 .orElseThrow(() ->
-                        new ResourceNotFoundException("User with this email " + username));
+                        new BadCredentialsException("User with this email " + username));
     }
 
     public User getUserById(Long userId) {
