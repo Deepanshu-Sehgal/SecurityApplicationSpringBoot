@@ -50,6 +50,10 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         cookie.setSecure("production".equals(deployEnv)); //this is only used for https only when we want to secure out cookie and only passed on https domain only not on http
         response.addCookie(cookie);
 
+        String frontEndUrl = "http://localhost:8080/home.html?token=" + accessToken;
+
+        getRedirectStrategy().sendRedirect(request, response, frontEndUrl);
+
 
     }
 }
