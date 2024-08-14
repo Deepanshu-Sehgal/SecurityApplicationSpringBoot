@@ -39,8 +39,8 @@ public class AuthController {
         LoginResponseDTO loginResponseDTO = authService.logIn(logInDTO);
         Cookie cookie = new Cookie("refreshToken", loginResponseDTO.getRefreshToken());
         cookie.setHttpOnly(true);
+        cookie.setSecure(true); //this is only used for https only when we want to secure out cookie and only passed on https domain only not on http
         response.addCookie(cookie);
-
         return ResponseEntity.ok(loginResponseDTO);
     }
 
