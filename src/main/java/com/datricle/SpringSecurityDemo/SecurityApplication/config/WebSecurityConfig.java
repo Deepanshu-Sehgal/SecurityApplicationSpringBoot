@@ -25,7 +25,7 @@ public class WebSecurityConfig {
     SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/posts", "/error", "/auth/**").permitAll() // for only this path
+                        .requestMatchers("/posts", "/error", "/auth/**","/home.html").permitAll() // for only this path
 //                        .requestMatchers("/posts/**").permitAll() // for all the path after posts/
 //                        .requestMatchers("/posts/**").hasAnyRole("ADMIN")
                         .anyRequest().authenticated())
