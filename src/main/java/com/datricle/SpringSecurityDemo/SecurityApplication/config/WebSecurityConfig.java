@@ -1,5 +1,6 @@
 package com.datricle.SpringSecurityDemo.SecurityApplication.config;
 
+import com.datricle.SpringSecurityDemo.SecurityApplication.entities.enums.Role;
 import com.datricle.SpringSecurityDemo.SecurityApplication.filters.JwtAuthFilter;
 import com.datricle.SpringSecurityDemo.SecurityApplication.handlers.OAuth2SuccessHandler;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +14,8 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import static com.datricle.SpringSecurityDemo.SecurityApplication.entities.enums.Role.ADMIN;
+
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
@@ -20,14 +23,19 @@ public class WebSecurityConfig {
 
     private final JwtAuthFilter jwtAuthFilter;
     private final OAuth2SuccessHandler oAuth2SuccessHandler;
+    private static final String[] publicRoutes = {
+            "/error", "/auth/**", "/home.html"
+    };
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/posts/**", "/error", "/auth/**","/home.html").permitAll() // for only this path
+                        .requestMatchers(publicRoutes).permitAll() // for only this path
 //                        .requestMatchers("/posts/**").permitAll() // for all the path after posts/
-//                        .requestMatchers("/posts/**").hasAnyRole("ADMIN")
+                        .requestMatchers("/posts/**").hasRole(ADMIN.name())
+
+
                         .anyRequest().authenticated())
                 .csrf(csrfConfig -> csrfConfig.disable())
                 .sessionManagement(sessionConfig -> sessionConfig
