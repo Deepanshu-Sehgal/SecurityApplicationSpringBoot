@@ -46,6 +46,7 @@ public class AuthController {
         cookie.setHttpOnly(true);
         cookie.setSecure("production".equals(deployEnv)); //this is only used for https only when we want to secure out cookie and only passed on https domain only not on http
         response.addCookie(cookie);
+
         return ResponseEntity.ok(loginResponseDTO);
     }
 

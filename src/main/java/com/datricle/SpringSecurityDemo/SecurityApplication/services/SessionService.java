@@ -4,17 +4,17 @@ import com.datricle.SpringSecurityDemo.SecurityApplication.entities.Session;
 import com.datricle.SpringSecurityDemo.SecurityApplication.entities.User;
 import com.datricle.SpringSecurityDemo.SecurityApplication.repositories.SessionRepository;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.SessionException;
 import org.springframework.security.web.authentication.session.SessionAuthenticationException;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class SessionService {
-    private SessionRepository sessionRepository;
+    private final SessionRepository sessionRepository;
     private final int SESSION_LIMIT = 2;
 
     public void generateNewSession(User user, String refreshToken) {
@@ -35,8 +35,11 @@ public class SessionService {
 
     }
 
-    public void validateSession(String refreshToken){
+    public void validateSession(String refreshToken) {
         Session session = sessionRepository.findByRefreshToken(refreshToken)
-                .orElseThrow(()->new SessionAuthenticationException("Session not found for  refreshToken:" + refreshToken));
+                .orElseThrow(() -> new SessionAuthenticationException("Session not found for  refreshToken:" + refreshToken));
+
+        session.setLastUsedAt(LocalDateTime.now());
+        sessionRepository.save(session);
     }
 }
