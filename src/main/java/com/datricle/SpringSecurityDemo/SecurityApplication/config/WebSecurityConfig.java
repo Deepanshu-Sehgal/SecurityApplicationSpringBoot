@@ -1,11 +1,11 @@
 package com.datricle.SpringSecurityDemo.SecurityApplication.config;
 
-import com.datricle.SpringSecurityDemo.SecurityApplication.entities.enums.Role;
 import com.datricle.SpringSecurityDemo.SecurityApplication.filters.JwtAuthFilter;
 import com.datricle.SpringSecurityDemo.SecurityApplication.handlers.OAuth2SuccessHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -15,6 +15,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import static com.datricle.SpringSecurityDemo.SecurityApplication.entities.enums.Role.ADMIN;
+import static com.datricle.SpringSecurityDemo.SecurityApplication.entities.enums.Role.CREATOR;
 
 @Configuration
 @EnableWebSecurity
@@ -33,9 +34,9 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(publicRoutes).permitAll() // for only this path
 //                        .requestMatchers("/posts/**").permitAll() // for all the path after posts/
-                        .requestMatchers("/posts/**").hasRole(ADMIN.name())
-
-
+                        .requestMatchers(HttpMethod.GET, "/posts/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/posts/**")
+                        .hasAnyRole(ADMIN.name(), CREATOR.name())
                         .anyRequest().authenticated())
                 .csrf(csrfConfig -> csrfConfig.disable())
                 .sessionManagement(sessionConfig -> sessionConfig
