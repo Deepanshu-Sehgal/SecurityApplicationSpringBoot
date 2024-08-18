@@ -1,5 +1,6 @@
 package com.datricle.SpringSecurityDemo.SecurityApplication.dto;
 
+import com.datricle.SpringSecurityDemo.SecurityApplication.entities.enums.Permission;
 import com.datricle.SpringSecurityDemo.SecurityApplication.entities.enums.Role;
 import lombok.Data;
 
@@ -14,4 +15,5 @@ public class SignUpDTO {
 
     //don't use this in production application
     private Set<Role> roles;
+    private Set<Permission> permissions;
 }
