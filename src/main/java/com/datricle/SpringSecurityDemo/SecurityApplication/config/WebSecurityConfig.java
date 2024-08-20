@@ -46,7 +46,7 @@ public class WebSecurityConfig {
                             .hasAnyAuthority(POST_CREATE.name())
 
                         .requestMatchers(HttpMethod.PUT, "/posts/**")
-                        .hasAuthority(POST_UPDATE.name())
+                            .hasAuthority(POST_UPDATE.name())
 
                         .requestMatchers(HttpMethod.DELETE, "/posts/**")
                             .hasAuthority(POST_DELETE.name())
