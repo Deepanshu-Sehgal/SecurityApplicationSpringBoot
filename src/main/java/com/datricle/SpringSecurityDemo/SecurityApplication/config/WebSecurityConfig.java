@@ -5,7 +5,6 @@ import com.datricle.SpringSecurityDemo.SecurityApplication.handlers.OAuth2Succes
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -14,10 +13,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
-import static com.datricle.SpringSecurityDemo.SecurityApplication.entities.enums.Permission.*;
-import static com.datricle.SpringSecurityDemo.SecurityApplication.entities.enums.Role.ADMIN;
-import static com.datricle.SpringSecurityDemo.SecurityApplication.entities.enums.Role.CREATOR;
 
 @Configuration
 @EnableWebSecurity
@@ -37,20 +32,7 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(publicRoutes).permitAll() // for only this path
 //                        .requestMatchers("/posts/**").permitAll() // for all the path after posts/
-                        .requestMatchers(HttpMethod.GET, "/posts/**").permitAll()
-
-                        .requestMatchers(HttpMethod.POST, "/posts/**")
-                            .hasAnyRole(ADMIN.name(), CREATOR.name())
-
-                        .requestMatchers(HttpMethod.POST, "/posts/**")
-                            .hasAnyAuthority(POST_CREATE.name())
-
-                        .requestMatchers(HttpMethod.PUT, "/posts/**")
-                            .hasAuthority(POST_UPDATE.name())
-
-                        .requestMatchers(HttpMethod.DELETE, "/posts/**")
-                            .hasAuthority(POST_DELETE.name())
-
+                        .requestMatchers("/posts/**").authenticated()
                         .anyRequest().authenticated())
                 .csrf(csrfConfig -> csrfConfig.disable())
                 .sessionManagement(sessionConfig -> sessionConfig
